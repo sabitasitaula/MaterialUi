@@ -1,0 +1,78 @@
+$(document).ready(function(){
+    var urlpath=document.getElementById('path').value;
+    // show popup when you click on the link
+    $('.show-popup').blur(function(event){
+        var licenseNo=document.getElementsByName('applicant.citizenshipnumber')[0].value;
+        //        var url="http://localhost:8080/Nepal_eDLVRS/checkCitizenNo?searchID="+licenseNo;
+        var url=urlpath+"/checkCitizenNo?searchID="+licenseNo;
+        //        alert(url);
+        //        alert(licenseNo);
+        if(licenseNo>=0){
+            var xmlHttp;
+            try
+            {
+                xmlHttp=new XMLHttpRequest();
+            }
+            catch (e)
+            {
+                // Internet Explorer
+                try
+                {
+                    xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+                }
+                catch (e)
+                {
+                    try
+                    {
+                        xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    catch (e)
+                    {
+                        alert("Your browser does not support AJAX!");
+                        return false;
+                    }
+                }
+            }
+            xmlHttp.onreadystatechange=function()
+            {
+                if(xmlHttp.readyState==4)
+                {
+                    var str = xmlHttp.responseText;
+                    if(str.length>1){
+                        str="<center> Citizen Number Already Exists</center> <br/>"+"<center> Citizen  Details  </center>"+str;
+                        $('.overlay-content').append(str);
+                        $('.overlay-bg').focus();//set focus on overlay window
+                        event.preventDefault(); // disable normal link function so that it doesn't refresh the page
+                        var docHeight = $(document).height(); //grab the height of the page
+                        var scrollTop = $(window).scrollTop(); //grab the px value from the top of the page to where you're scrolling
+                        $('.overlay-bg').show().css({
+                            'height' : docHeight
+                        }); //display your popup and set height to the page height
+                        $('.overlay-content').css({
+                            'top': scrollTop+20+'px'
+                        }); //set the content 20px from the window top
+                    }
+                }
+            }
+            xmlHttp.open("GET",url,true);
+            xmlHttp.send(null);
+        }
+    });
+ 
+    // hide popup when user clicks on close button
+    $('.close-btn').click(function(){
+        $('.overlay-content').empty();
+        $('.overlay-bg').hide(); // hide the overlay
+    });
+ 
+    // hides the popup if user clicks anywhere outside the container
+    $('.overlay-bg').click(function(){
+        $('.overlay-bg').hide();
+    })
+    // prevents the overlay from closing if user clicks inside the popup overlay
+    $('.overlay-content').click(function(){
+        return false;
+    });
+
+ 
+});

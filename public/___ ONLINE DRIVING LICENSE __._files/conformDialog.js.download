@@ -1,0 +1,23 @@
+/* 
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+$(document).ready(function () {
+        $("#confirmBox").click(function (e) {
+            // use whatever confirm box you want here
+            if (!window.confirm("Are you sure to continue?"))
+            {
+                // preventdefault is used to stop future click operation
+                e.preventDefault();
+            }
+        });
+        $("#confirmBox1").click(function (e) {
+            // use whatever confirm box you want here
+            if (!window.confirm("Are you sure to continue?"))
+            {
+                // preventdefault is used to stop future click operation
+                e.preventDefault();
+            }
+        });
+    });
